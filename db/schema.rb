@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_08_022339) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_05_015411) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -49,8 +49,42 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_08_022339) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "books", force: :cascade do |t|
+  create_table "album_genres", force: :cascade do |t|
+    t.integer "album_id", null: false
+    t.integer "genre_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["album_id"], name: "index_album_genres_on_album_id"
+    t.index ["genre_id"], name: "index_album_genres_on_genre_id"
+  end
+
+  create_table "albums", force: :cascade do |t|
     t.string "title"
+    t.integer "artist_id", null: false
+    t.date "date"
+    t.string "version"
+    t.integer "price"
+    t.integer "shelf_id", null: false
+    t.integer "quantity_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["artist_id"], name: "index_albums_on_artist_id"
+    t.index ["quantity_id"], name: "index_albums_on_quantity_id"
+    t.index ["shelf_id"], name: "index_albums_on_shelf_id"
+  end
+
+  create_table "artist_genres", force: :cascade do |t|
+    t.integer "artist_id", null: false
+    t.integer "genre_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["artist_id"], name: "index_artist_genres_on_artist_id"
+    t.index ["genre_id"], name: "index_artist_genres_on_genre_id"
+  end
+
+  create_table "artists", force: :cascade do |t|
+    t.string "name"
+    t.date "dob"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -64,6 +98,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_08_022339) do
     t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
+  end
+
+  create_table "genres", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "shelves", force: :cascade do |t|
+    t.integer "row_number"
+    t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -83,4 +131,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_08_022339) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "album_genres", "albums"
+  add_foreign_key "album_genres", "genres"
+  add_foreign_key "albums", "artists"
+  add_foreign_key "albums", "quantities"
+  add_foreign_key "albums", "shelves"
+  add_foreign_key "artist_genres", "artists"
+  add_foreign_key "artist_genres", "genres"
 end

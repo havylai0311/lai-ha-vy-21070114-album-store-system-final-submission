@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  artist: one
+  date: 2023-04-05
+  version: MyString
+  price: 1
+  shelf: one
+  quantity: one
+
+two:
+  title: MyString
+  artist: two
+  date: 2023-04-05
+  version: MyString
+  price: 1
+  shelf: two
+  quantity: two
